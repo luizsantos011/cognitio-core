@@ -1,7 +1,6 @@
-package com.cognitio;
+package com.cognitio.attachment;
 
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
+import com.cognitio.core.CognitioCore;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.*;
 import java.util.function.Supplier;

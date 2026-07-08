@@ -1,5 +1,7 @@
-package com.cognitio;
+package com.cognitio.api.perspective;
 
+import com.cognitio.attachment.AttachmentRegister;
+import com.cognitio.attachment.InsightData;
 import net.minecraft.world.entity.player.Player;
 
 public class PerspectiveEngine {

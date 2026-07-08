@@ -1,5 +1,9 @@
-package com.cognitio;
+package com.cognitio.event;
 
+import com.cognitio.api.perspective.PerspectiveEngine;
+import com.cognitio.attachment.AttachmentRegister;
+import com.cognitio.attachment.InsightData;
+import com.cognitio.core.CognitioCore;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;

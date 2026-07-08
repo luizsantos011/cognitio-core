@@ -1,5 +1,6 @@
-package com.cognitio;
+package com.cognitio.core;
 
+import com.cognitio.attachment.AttachmentRegister;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;

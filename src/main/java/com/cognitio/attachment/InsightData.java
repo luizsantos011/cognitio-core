@@ -1,4 +1,4 @@
-package com.cognitio;
+package com.cognitio.attachment;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
