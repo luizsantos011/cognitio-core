@@ -3,8 +3,7 @@ package com.cognitio;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.neoforged.neoforge.registries.*;
 import java.util.function.Supplier;
 
 @EventBusSubscriber(modid = CognitioCore.MODID, bus = EventBusSubscriber.Bus.MOD)
