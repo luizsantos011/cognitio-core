@@ -6,7 +6,6 @@ import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.*;
 import java.util.function.Supplier;
 
-@EventBusSubscriber(modid = CognitioCore.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class AttachmentRegister {
 
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES =
