@@ -1,0 +1,23 @@
+package com.cognitio;
+
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import java.util.function.Supplier;
+
+@EventBusSubscriber(modid = CognitioCore.MODID, bus = EventBusSubscriber.Bus.MOD)
+public class AttachmentRegister {
+
+    public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES =
+            DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, CognitioCore.MODID);
+
+    public static final Supplier<AttachmentType<InsightData>> COGNITIO_INSIGHT = ATTACHMENT_TYPES.register(
+            "insight",
+            () -> AttachmentType.builder(() -> new InsightData(0))
+                    .serialize(InsightData.CODEC)
+                    .copyOnDeath()
+                    .build()
+    );
+}

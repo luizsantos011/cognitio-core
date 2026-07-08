@@ -35,6 +35,8 @@ public class CognitioCore {
 
         // Registro do arquivo de configuração do Mod
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        AttachmentRegister.ATTACHMENT_TYPES.register(modEventBus);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
