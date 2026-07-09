@@ -1,21 +1,28 @@
 package com.cognitio.event;
 
-import com.cognitio.api.perspective.PerspectiveEngine;
+import com.cognitio.api.perception.PerceptionEngine;
 import com.cognitio.attachment.AttachmentRegister;
 import com.cognitio.attachment.InsightData;
 import com.cognitio.core.CognitioCore;
 import net.minecraft.network.chat.Component;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.level.*;
+import net.neoforged.neoforge.event.level.BlockEvent;
 
 @EventBusSubscriber(modid = CognitioCore.MODID, bus = EventBusSubscriber.Bus.GAME)
 public class InsightEventHandler {
+
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
-        if(!event.getLevel().isClientSide() && !player.isCreative()) {
+        if (!event.getLevel().isClientSide() && !player.isCreative()) {
             InsightData oldData = player.getData(AttachmentRegister.COGNITIO_INSIGHT.get());
 
             int currentPoints = oldData.points();
@@ -31,17 +38,19 @@ public class InsightEventHandler {
     public static void onBlockDrop(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
 
-        if(!event.getLevel().isClientSide() && event.getState().is(net.minecraft.world.level.block.Blocks.GRASS_BLOCK)) {
-            int currentPerspective = PerspectiveEngine.getEffectivePerspective(player);
+        if (!event.getLevel().isClientSide() && event.getState().is(Blocks.GRASS_BLOCK)) {
+            int currentPerception = PerceptionEngine.getEffectivePerception(player);
 
-            if(currentPerspective >= 10){
-                net.minecraft.world.level.Level level = (net.minecraft.world.level.Level) event.getLevel();
-                net.minecraft.core.BlockPos pos = event.getPos();
-                net.minecraft.world.entity.item.ItemEntity seedDrop = new net.minecraft.world.entity.item.ItemEntity(
-                        level,
-                        pos.getX(), pos.getY(), pos.getZ(),
-                        new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.WHEAT_SEEDS, 1));
-                level.addFreshEntity(seedDrop);
+            if (currentPerception >= 10) {
+                if (event.getLevel() instanceof Level level) {
+                    BlockPos pos = event.getPos();
+                    ItemEntity seedDrop = new ItemEntity(
+                            level,
+                            pos.getX(), pos.getY(), pos.getZ(),
+                            new ItemStack(Items.WHEAT_SEEDS, 1)
+                    );
+                    level.addFreshEntity(seedDrop);
+                }
             }
         }
     }
