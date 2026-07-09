@@ -8,22 +8,29 @@ public class PerceptionEngine {
 
     public static int getEffectivePerception(Player player) {
         InsightData insightData = player.getData(AttachmentRegister.COGNITIO_INSIGHT.get());
-        int rawInsight = insightData.points();
-        int basePerception = rawInsight;
-
-        double multiplier = getPerceptionMultiplier(player);
-        int bonus = getPerceptionBonus(player);
-
-        int finalPerception = (int) (basePerception * multiplier + bonus);
+        int basePerception = insightData.points();
+        int totalWithBonus = basePerception + getPerceptionBonus(insightData);
+        double totalMultiplier = getPerceptionMultiplier(insightData);
+        int finalPerception = (int) (totalWithBonus * totalMultiplier);
 
         return Math.max(0, finalPerception);
     }
 
-    private static double getPerceptionMultiplier(Player player) {
-        return 1.0;
+    private static double getPerceptionMultiplier(InsightData insightData) {
+        double total = 1.0;
+
+        for(double mod : insightData.multipliers().values()){
+            total *= mod;
+        }
+        return total;
     }
 
-    private static int getPerceptionBonus(Player player) {
-        return 0;
+    private static int getPerceptionBonus(InsightData insightData) {
+        int total = 0;
+
+        for(int bonus : insightData.bonuses().values()){
+            total += bonus;
+        }
+        return total;
     }
 }
