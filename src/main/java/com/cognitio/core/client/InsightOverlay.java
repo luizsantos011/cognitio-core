@@ -26,18 +26,16 @@ public class InsightOverlay {
         int insight = ClientInsightCache.getPoints();
 
         GuiGraphics graphics = event.getGuiGraphics();
-        
         int screenWidth = mc.getWindow().getGuiScaledWidth();
-        
-        int x = screenWidth - 20;
-        int y = 10;
-
-        // Draw the eye icon
-        graphics.blit(EYE_TEXTURE, x, y, 0, 0, 16, 16, 16, 16);
-
-        // Draw the insight number to the left of the eye
         String text = String.valueOf(insight);
         int textWidth = mc.font.width(text);
-        graphics.drawString(mc.font, text, x - textWidth - 5, y + 4, 0xFFFFFF);
+        
+        int textX = screenWidth - textWidth - 10;
+        int textY = 10 + 4;
+        graphics.drawString(mc.font, text, textX, textY, 0xFFFFFF);
+
+        int iconX = textX - 16 - 5;
+        int iconY = 10;
+        graphics.blit(EYE_TEXTURE, iconX, iconY, 0, 0, 16, 16, 16, 16);
     }
 }
