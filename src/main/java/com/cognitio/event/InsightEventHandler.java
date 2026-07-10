@@ -26,7 +26,7 @@ public class InsightEventHandler {
             InsightData oldData = player.getData(AttachmentRegister.COGNITIO_INSIGHT.get());
 
             int currentPoints = oldData.points();
-            int newPoints = currentPoints + 1;
+            int newPoints = currentPoints + 200;
             InsightData newData = new InsightData(newPoints);
 
             player.setData(AttachmentRegister.COGNITIO_INSIGHT.get(), newData);
