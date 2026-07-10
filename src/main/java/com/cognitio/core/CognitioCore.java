@@ -37,6 +37,7 @@ public class CognitioCore {
         NeoForge.EVENT_BUS.register(new InfluenceTriggerHandler());
         NeoForge.EVENT_BUS.register(new InfluenceMentalHandler());
         NeoForge.EVENT_BUS.register(new InfluenceRelationalHandler());
+        NeoForge.EVENT_BUS.register(new InfluenceOntologicalHandler());
 
         // Registro do arquivo de configuração do Mod
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
