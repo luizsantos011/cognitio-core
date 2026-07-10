@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -44,12 +45,9 @@ public class InsightEventHandler {
             if (currentPerception >= 10) {
                 if (event.getLevel() instanceof Level level) {
                     BlockPos pos = event.getPos();
-                    ItemEntity seedDrop = new ItemEntity(
-                            level,
-                            pos.getX(), pos.getY(), pos.getZ(),
-                            new ItemStack(Items.WHEAT_SEEDS, 1)
-                    );
-                    level.addFreshEntity(seedDrop);
+
+                    ItemStack seedStack = new ItemStack(Items.WHEAT_SEEDS, 1);
+                    Block.popResource(level, pos, seedStack);
                 }
             }
         }
