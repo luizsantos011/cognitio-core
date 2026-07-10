@@ -4,9 +4,8 @@ import com.cognitio.api.perception.PerceptionEngine;
 import com.cognitio.attachment.AttachmentRegister;
 import com.cognitio.attachment.InsightData;
 import com.cognitio.core.CognitioCore;
-import net.minecraft.network.chat.Component;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -24,14 +23,10 @@ public class InsightEventHandler {
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
         if (!event.getLevel().isClientSide() && !player.isCreative()) {
-            InsightData oldData = player.getData(AttachmentRegister.COGNITIO_INSIGHT.get());
+            PerceptionEngine.addInsight(player, 10);
 
-            int currentPoints = oldData.points();
-            int newPoints = currentPoints + 1;
-            InsightData newData = new InsightData(newPoints);
-
-            player.setData(AttachmentRegister.COGNITIO_INSIGHT.get(), newData);
-            player.sendSystemMessage(Component.literal("Você ganhou 1 ponto de Insight! Total: " + newPoints));
+            InsightData insightData = player.getData(AttachmentRegister.COGNITIO_INSIGHT.get());
+            player.sendSystemMessage(Component.literal("Você ganhou 1 ponto de Insight! Total: " + insightData.points()));
         }
     }
 
