@@ -25,8 +25,7 @@ public class InsightEventHandler {
         if (!event.getLevel().isClientSide() && !player.isCreative()) {
             PerceptionEngine.addInsight(player, 10);
 
-            InsightData insightData = player.getData(AttachmentRegister.COGNITIO_INSIGHT.get());
-            player.sendSystemMessage(Component.literal("Você ganhou 1 ponto de Insight! Total: " + insightData.points()));
+
         }
     }
 
