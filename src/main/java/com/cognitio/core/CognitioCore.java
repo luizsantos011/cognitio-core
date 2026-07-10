@@ -1,7 +1,7 @@
 package com.cognitio.core;
 
 import com.cognitio.attachment.AttachmentRegister;
-import com.cognitio.core.influence.InfluenceTriggerHandler;
+import com.cognitio.core.influence.*;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
@@ -35,6 +35,8 @@ public class CognitioCore {
 
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(new InfluenceTriggerHandler());
+        NeoForge.EVENT_BUS.register(new InfluenceMentalHandler());
+        NeoForge.EVENT_BUS.register(new InfluenceRelationalHandler());
 
         // Registro do arquivo de configuração do Mod
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
