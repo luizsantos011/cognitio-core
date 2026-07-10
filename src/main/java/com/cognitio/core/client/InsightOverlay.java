@@ -23,8 +23,7 @@ public class InsightOverlay {
         LocalPlayer player = mc.player;
         if (player == null) return;
 
-        InsightData data = player.getData(AttachmentRegister.COGNITIO_INSIGHT.get());
-        int insight = data.points();
+        int insight = ClientInsightCache.getPoints();
 
         GuiGraphics graphics = event.getGuiGraphics();
         

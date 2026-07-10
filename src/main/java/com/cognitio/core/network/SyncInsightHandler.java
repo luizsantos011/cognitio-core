@@ -15,6 +15,8 @@ public class SyncInsightHandler {
                 InsightData oldData = player.getData(AttachmentRegister.COGNITIO_INSIGHT.get());
                 InsightData newData = new InsightData(payload.insightPoints(), oldData.multipliers(), oldData.bonuses());
                 player.setData(AttachmentRegister.COGNITIO_INSIGHT.get(), newData);
+                com.cognitio.core.client.ClientInsightCache.setPoints(payload.insightPoints());
+
 
                 // Recria a instância do item da mão no cliente para forçar o recalculamento imediato do modelo wrapper
                 ItemStack mainHand = player.getMainHandItem();
