@@ -12,12 +12,7 @@ public class TimeManipulationHandler {
     public void onLevelTick(LevelTickEvent.Post event) {
         if (event.getLevel() instanceof ServerLevel serverLevel && serverLevel.dimension() == ServerLevel.OVERWORLD) {
 
-            boolean hasObsessedPlayer = serverLevel.players().stream().anyMatch(player -> {
-                int perception = getEffectivePerception(player);
-                return perception >= 1000;
-            });
-
-            if (hasObsessedPlayer) {
+            if (com.cognitio.core.perception.PerceptionEngine.hasObsessedPlayer) {
                 if (skipTick) {
                     long currentTime = serverLevel.getDayTime();
                     serverLevel.setDayTime(currentTime - 1);

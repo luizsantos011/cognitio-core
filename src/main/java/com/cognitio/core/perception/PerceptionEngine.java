@@ -39,6 +39,8 @@ public class PerceptionEngine {
         }
     }
 
+    public static boolean hasObsessedPlayer = false;
+
     public static void updatePlayerPerception(ServerPlayer player, int newPerceptionValue) {
         UUID uuid = player.getUUID();
         PerceptionTier currentTier = PerceptionTier.getTierFor(newPerceptionValue);
@@ -46,6 +48,7 @@ public class PerceptionEngine {
 
         if (currentTier != lastTier) {
             playerTiers.put(uuid, currentTier);
+            hasObsessedPlayer = playerTiers.values().stream().anyMatch(tier -> tier == PerceptionTier.OBSESSED);
 
             // Aplica o efeito visual apenas se o jogador subiu de tier (subindo de 0 para 50)
             if (currentTier.minPerception > lastTier.minPerception) {
@@ -62,5 +65,6 @@ public class PerceptionEngine {
     @SubscribeEvent
     public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
         playerTiers.remove(event.getEntity().getUUID());
+        hasObsessedPlayer = playerTiers.values().stream().anyMatch(tier -> tier == PerceptionTier.OBSESSED);
     }
 }
