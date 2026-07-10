@@ -60,4 +60,15 @@ public class PerceptionEngine {
         InsightData newData = new InsightData(oldData.points(), newMultipliers, newBonuses);
         player.setData(AttachmentRegister.COGNITIO_INSIGHT.get(), newData);
     }
+
+    public static void addInsight(Player player, int amount) {
+        InsightData oldData = player.getData(AttachmentRegister.COGNITIO_INSIGHT.get());
+
+        InsightData newData = new InsightData(oldData.points() + amount, oldData.multipliers(), oldData.bonuses());
+        player.setData(AttachmentRegister.COGNITIO_INSIGHT.get(), newData);
+
+        if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+            com.cognitio.core.perception.PerceptionEngine.updatePlayerPerception(serverPlayer, getEffectivePerception(player));
+        }
+    }
 }
