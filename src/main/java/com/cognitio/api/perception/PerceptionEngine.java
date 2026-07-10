@@ -2,7 +2,10 @@ package com.cognitio.api.perception;
 
 import com.cognitio.attachment.AttachmentRegister;
 import com.cognitio.attachment.InsightData;
+import com.cognitio.core.network.SyncInsightPayload;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +25,7 @@ public class PerceptionEngine {
     private static double getPerceptionMultiplier(InsightData insightData) {
         double total = 1.0;
 
-        for(double mod : insightData.multipliers().values()){
+        for (double mod : insightData.multipliers().values()) {
             total *= mod;
         }
         return total;
@@ -31,7 +34,7 @@ public class PerceptionEngine {
     private static int getPerceptionBonus(InsightData insightData) {
         int total = 0;
 
-        for(int bonus : insightData.bonuses().values()){
+        for (int bonus : insightData.bonuses().values()) {
             total += bonus;
         }
         return total;
@@ -47,6 +50,8 @@ public class PerceptionEngine {
 
         InsightData newData = new InsightData(oldData.points(), newMultipliers, newBonuses);
         player.setData(AttachmentRegister.COGNITIO_INSIGHT.get(), newData);
+
+        syncAndRefresh(player, newData.points());
     }
 
     public static void removeModifier(Player player, String id) {
@@ -59,16 +64,24 @@ public class PerceptionEngine {
 
         InsightData newData = new InsightData(oldData.points(), newMultipliers, newBonuses);
         player.setData(AttachmentRegister.COGNITIO_INSIGHT.get(), newData);
+
+        syncAndRefresh(player, newData.points());
     }
 
     public static void addInsight(Player player, int amount) {
         InsightData oldData = player.getData(AttachmentRegister.COGNITIO_INSIGHT.get());
-
         InsightData newData = new InsightData(oldData.points() + amount, oldData.multipliers(), oldData.bonuses());
         player.setData(AttachmentRegister.COGNITIO_INSIGHT.get(), newData);
 
-        if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+        syncAndRefresh(player, newData.points());
+    }
+
+    private static void syncAndRefresh(Player player, int points) {
+        if (player instanceof ServerPlayer serverPlayer) {
             com.cognitio.core.perception.PerceptionEngine.updatePlayerPerception(serverPlayer, getEffectivePerception(player));
+
+            PacketDistributor.sendToPlayer(serverPlayer, new SyncInsightPayload(points));
+            serverPlayer.inventoryMenu.broadcastChanges();
         }
     }
 }
