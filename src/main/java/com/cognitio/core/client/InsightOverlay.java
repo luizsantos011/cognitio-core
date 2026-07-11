@@ -30,11 +30,11 @@ public class InsightOverlay {
         int textWidth = mc.font.width(text);
         
         int textX = screenWidth - textWidth - 10;
-        int textY = 10 + 4;
+        int textY = 45 + 4;
         graphics.drawString(mc.font, text, textX, textY, 0xFFFFFF);
 
         int iconX = textX - 16 - 5;
-        int iconY = 10;
+        int iconY = 45;
         graphics.blit(EYE_TEXTURE, iconX, iconY, 0, 0, 16, 16, 16, 16);
     }
 }
