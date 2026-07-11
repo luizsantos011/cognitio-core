@@ -2,6 +2,8 @@ package com.cognitio.core;
 
 import com.cognitio.core.attachment.AttachmentRegister;
 import com.cognitio.core.influence.*;
+import com.cognitio.api.perception.InsightAPI;
+import com.cognitio.core.perception.PerceptionEngine;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
@@ -48,6 +50,7 @@ public class CognitioCore {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         LOGGER.info("Cognitio Core: Inicializando sistemas base...");
+        InsightAPI.setProvider(PerceptionEngine::addInsight);
     }
 
     @SubscribeEvent

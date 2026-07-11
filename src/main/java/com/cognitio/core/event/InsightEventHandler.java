@@ -18,13 +18,6 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 @EventBusSubscriber(modid = CognitioCore.MODID, bus = EventBusSubscriber.Bus.GAME)
 public class InsightEventHandler {
 
-    @SubscribeEvent
-    public static void onBlockBreak(BlockEvent.BreakEvent event) {
-        Player player = event.getPlayer();
-        if (!event.getLevel().isClientSide() && !player.isCreative()) {
-            PerceptionEngine.addInsight(player, 10, com.cognitio.api.perception.InsightSource.BLOCK_BREAK);
-        }
-    }
 
     @SubscribeEvent
     public static void onBlockDrop(BlockEvent.BreakEvent event) {
