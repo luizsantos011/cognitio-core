@@ -68,12 +68,23 @@ public class PerceptionEngine {
         syncAndRefresh(player, newData.points());
     }
 
-    public static void addInsight(Player player, int amount) {
+    public static boolean addInsight(Player player, int amount, InsightSource source) {
+        InsightEvent.Gain event = new InsightEvent.Gain(player, amount, source);
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(event);
+
+        if (event.isCanceled()) {
+            return false;
+        }
+
+        int finalAmount = event.getNewAmount();
+        if (finalAmount <= 0) return false;
+
         InsightData oldData = player.getData(AttachmentRegister.COGNITIO_INSIGHT.get());
-        InsightData newData = new InsightData(oldData.points() + amount, oldData.multipliers(), oldData.bonuses());
+        InsightData newData = new InsightData(oldData.points() + finalAmount, oldData.multipliers(), oldData.bonuses());
         player.setData(AttachmentRegister.COGNITIO_INSIGHT.get(), newData);
 
         syncAndRefresh(player, newData.points());
+        return true;
     }
 
     private static void syncAndRefresh(Player player, int points) {

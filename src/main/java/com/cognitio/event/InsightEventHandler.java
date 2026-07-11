@@ -23,9 +23,7 @@ public class InsightEventHandler {
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
         if (!event.getLevel().isClientSide() && !player.isCreative()) {
-            PerceptionEngine.addInsight(player, 10);
-
-
+            PerceptionEngine.addInsight(player, 10, com.cognitio.api.perception.InsightSource.BLOCK_BREAK);
         }
     }
 
