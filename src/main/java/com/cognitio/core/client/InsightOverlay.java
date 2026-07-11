@@ -1,7 +1,6 @@
 package com.cognitio.core.client;
 
-import com.cognitio.core.attachment.AttachmentRegister;
-import com.cognitio.core.attachment.InsightData;
+
 import com.cognitio.core.CognitioCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

@@ -1,14 +1,14 @@
 package com.cognitio.core.influence;
 
 import com.cognitio.api.influence.InfluenceEvent;
-import net.minecraft.world.entity.player.Player;
+
 import net.neoforged.bus.api.SubscribeEvent;
 
 public class InfluenceRelationalHandler {
 
     @SubscribeEvent
     public void onRelationalInfluence(InfluenceEvent.Relational event) {
-        Player player = event.getPlayer();
+        // Player player = event.getPlayer();
         int perception = event.getCurrentPerception();
 
         if (perception >= 75) {

@@ -11,7 +11,7 @@ public record InsightSource(ResourceLocation id) {
     // Gatilhos comuns do vanilla
     public static final InsightSource BLOCK_BREAK = new InsightSource(ResourceLocation.withDefaultNamespace("block_break"));
     public static final InsightSource ENTITY_KILL = new InsightSource(ResourceLocation.withDefaultNamespace("entity_kill"));
-    public static final InsightSource CONSUMABLE = new InsightSource(ResourceLocation.withDefaultNamespace("consumABLE"));
+    public static final InsightSource CONSUMABLE = new InsightSource(ResourceLocation.withDefaultNamespace("consumable"));
     public static final InsightSource COMMAND = new InsightSource(ResourceLocation.withDefaultNamespace("command"));
 
     public InsightSource(String namespace, String path) {

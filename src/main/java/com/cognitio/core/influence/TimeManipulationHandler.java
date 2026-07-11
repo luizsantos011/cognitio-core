@@ -3,7 +3,7 @@ package com.cognitio.core.influence;
 import net.minecraft.server.level.ServerLevel;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
-import static com.cognitio.core.perception.PerceptionEngine.*;
+
 
 public class TimeManipulationHandler {
     private boolean skipTick = false;

@@ -4,7 +4,7 @@ import com.cognitio.api.influence.InfluenceEvent;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
+
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 public class InfluenceTriggerHandler {
