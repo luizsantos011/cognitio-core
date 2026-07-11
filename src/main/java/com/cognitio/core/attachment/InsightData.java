@@ -1,4 +1,4 @@
-package com.cognitio.attachment;
+package com.cognitio.core.attachment;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -21,3 +21,5 @@ public record InsightData(
         this(points, Collections.emptyMap(), Collections.emptyMap());
     }
 }
+
+

@@ -1,8 +1,8 @@
-package com.cognitio.event;
+package com.cognitio.core.event;
 
-import com.cognitio.api.perception.PerceptionEngine;
-import com.cognitio.attachment.AttachmentRegister;
-import com.cognitio.attachment.InsightData;
+import com.cognitio.core.perception.PerceptionEngine;
+import com.cognitio.core.attachment.AttachmentRegister;
+import com.cognitio.core.attachment.InsightData;
 import com.cognitio.core.CognitioCore;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -45,3 +45,5 @@ public class InsightEventHandler {
         }
     }
 }
+
+

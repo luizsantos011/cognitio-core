@@ -1,6 +1,6 @@
 package com.cognitio.core;
 
-import com.cognitio.attachment.AttachmentRegister;
+import com.cognitio.core.attachment.AttachmentRegister;
 import com.cognitio.core.influence.*;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;

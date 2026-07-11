@@ -1,6 +1,6 @@
 package com.cognitio.api.influence;
 
-import com.cognitio.api.perception.PerceptionEngine;
+import com.cognitio.core.perception.PerceptionEngine;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.Event;
 

@@ -1,7 +1,7 @@
 package com.cognitio.core.client;
 
-import com.cognitio.attachment.AttachmentRegister;
-import com.cognitio.attachment.InsightData;
+import com.cognitio.core.attachment.AttachmentRegister;
+import com.cognitio.core.attachment.InsightData;
 import com.cognitio.core.CognitioCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -39,3 +39,4 @@ public class InsightOverlay {
         graphics.blit(EYE_TEXTURE, iconX, iconY, 0, 0, 16, 16, 16, 16);
     }
 }
+

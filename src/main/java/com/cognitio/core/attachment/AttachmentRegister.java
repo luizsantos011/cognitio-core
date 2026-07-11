@@ -1,4 +1,4 @@
-package com.cognitio.attachment;
+package com.cognitio.core.attachment;
 
 import com.cognitio.core.CognitioCore;
 import net.neoforged.neoforge.attachment.AttachmentType;
@@ -18,3 +18,5 @@ public class AttachmentRegister {
                     .build()
     );
 }
+
+

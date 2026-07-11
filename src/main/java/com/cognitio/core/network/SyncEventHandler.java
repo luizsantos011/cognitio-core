@@ -1,6 +1,6 @@
 package com.cognitio.core.network;
 
-import com.cognitio.api.perception.PerceptionEngine;
+import com.cognitio.core.perception.PerceptionEngine;
 import com.cognitio.core.CognitioCore;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;

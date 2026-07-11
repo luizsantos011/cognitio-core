@@ -1,7 +1,7 @@
 package com.cognitio.core.network;
 
-import com.cognitio.attachment.AttachmentRegister;
-import com.cognitio.attachment.InsightData;
+import com.cognitio.core.attachment.AttachmentRegister;
+import com.cognitio.core.attachment.InsightData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.item.ItemStack;

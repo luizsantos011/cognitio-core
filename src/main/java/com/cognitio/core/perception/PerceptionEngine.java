@@ -1,70 +1,101 @@
 package com.cognitio.core.perception;
 
-import com.cognitio.api.influence.InfluenceEvent;
-import com.cognitio.core.CognitioCore;
+import com.cognitio.api.perception.InsightEvent;
+import com.cognitio.api.perception.InsightSource;
+import com.cognitio.core.attachment.AttachmentRegister;
+import com.cognitio.core.attachment.InsightData;
+import com.cognitio.core.network.SyncInsightPayload;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
-@EventBusSubscriber(modid = CognitioCore.MODID)
 public class PerceptionEngine {
 
-    private static final Map<UUID, PerceptionTier> playerTiers = new HashMap<>();
+    public static int getEffectivePerception(Player player) {
+        InsightData insightData = player.getData(AttachmentRegister.COGNITIO_INSIGHT.get());
+        int basePerception = insightData.points();
+        int totalWithBonus = basePerception + getPerceptionBonus(insightData);
+        double totalMultiplier = getPerceptionMultiplier(insightData);
+        int finalPerception = (int) (totalWithBonus * totalMultiplier);
 
-    public enum PerceptionTier {
-        NONE(0),
-        MEDIUM(50),
-        ADVANCED(75),
-        OBSESSED(1000);
-
-        public final int minPerception;
-
-        PerceptionTier(int minPerception) {
-            this.minPerception = minPerception;
-        }
-
-        public static PerceptionTier getTierFor(int perception) {
-            if (perception >= 1000) return OBSESSED;
-            if (perception >= 75) return ADVANCED;
-            if (perception >= 50) return MEDIUM;
-            return NONE;
-        }
+        return Math.max(0, finalPerception);
     }
 
-    public static boolean hasObsessedPlayer = false;
+    private static double getPerceptionMultiplier(InsightData insightData) {
+        double total = 1.0;
 
-    public static void updatePlayerPerception(ServerPlayer player, int newPerceptionValue) {
-        UUID uuid = player.getUUID();
-        PerceptionTier currentTier = PerceptionTier.getTierFor(newPerceptionValue);
-        PerceptionTier lastTier = playerTiers.getOrDefault(uuid, PerceptionTier.NONE);
-
-        if (currentTier != lastTier) {
-            playerTiers.put(uuid, currentTier);
-            hasObsessedPlayer = playerTiers.values().stream().anyMatch(tier -> tier == PerceptionTier.OBSESSED);
-
-            // Aplica o efeito visual apenas se o jogador subiu de tier (subindo de 0 para 50)
-            if (currentTier.minPerception > lastTier.minPerception) {
-                player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0, false, false, true));
-            }
-
-            NeoForge.EVENT_BUS.post(new InfluenceEvent.Psychic(player));
-            NeoForge.EVENT_BUS.post(new InfluenceEvent.Relational(player));
-            NeoForge.EVENT_BUS.post(new InfluenceEvent.Ontological(player));
+        for (double mod : insightData.multipliers().values()) {
+            total *= mod;
         }
+        return total;
     }
 
-    // Impede que dados de sessões antigas fiquem presos na memória da IDE ao trocar de mundo
-    @SubscribeEvent
-    public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
-        playerTiers.remove(event.getEntity().getUUID());
-        hasObsessedPlayer = playerTiers.values().stream().anyMatch(tier -> tier == PerceptionTier.OBSESSED);
+    private static int getPerceptionBonus(InsightData insightData) {
+        int total = 0;
+
+        for (int bonus : insightData.bonuses().values()) {
+            total += bonus;
+        }
+        return total;
+    }
+
+    public static void applyModifier(Player player, String id, double multiplier, int bonus) {
+        InsightData oldData = player.getData(AttachmentRegister.COGNITIO_INSIGHT.get());
+        Map<String, Double> newMultipliers = new HashMap<>(oldData.multipliers());
+        Map<String, Integer> newBonuses = new HashMap<>(oldData.bonuses());
+
+        newMultipliers.put(id, multiplier);
+        newBonuses.put(id, bonus);
+
+        InsightData newData = new InsightData(oldData.points(), newMultipliers, newBonuses);
+        player.setData(AttachmentRegister.COGNITIO_INSIGHT.get(), newData);
+
+        syncAndRefresh(player, newData.points());
+    }
+
+    public static void removeModifier(Player player, String id) {
+        InsightData oldData = player.getData(AttachmentRegister.COGNITIO_INSIGHT.get());
+        Map<String, Double> newMultipliers = new HashMap<>(oldData.multipliers());
+        Map<String, Integer> newBonuses = new HashMap<>(oldData.bonuses());
+
+        newMultipliers.remove(id);
+        newBonuses.remove(id);
+
+        InsightData newData = new InsightData(oldData.points(), newMultipliers, newBonuses);
+        player.setData(AttachmentRegister.COGNITIO_INSIGHT.get(), newData);
+
+        syncAndRefresh(player, newData.points());
+    }
+
+    public static boolean addInsight(Player player, int amount, InsightSource source) {
+        InsightEvent.Gain event = new InsightEvent.Gain(player, amount, source);
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(event);
+
+        if (event.isCanceled()) {
+            return false;
+        }
+
+        int finalAmount = event.getNewAmount();
+        if (finalAmount <= 0) return false;
+
+        InsightData oldData = player.getData(AttachmentRegister.COGNITIO_INSIGHT.get());
+        InsightData newData = new InsightData(oldData.points() + finalAmount, oldData.multipliers(), oldData.bonuses());
+        player.setData(AttachmentRegister.COGNITIO_INSIGHT.get(), newData);
+
+        syncAndRefresh(player, newData.points());
+        return true;
+    }
+
+    private static void syncAndRefresh(Player player, int points) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            com.cognitio.core.perception.PerceptionTierManager.updatePlayerPerception(serverPlayer, getEffectivePerception(player));
+
+            PacketDistributor.sendToPlayer(serverPlayer, new SyncInsightPayload(points));
+            serverPlayer.inventoryMenu.broadcastChanges();
+        }
     }
 }
+

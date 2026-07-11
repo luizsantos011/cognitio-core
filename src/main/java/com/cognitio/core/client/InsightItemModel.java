@@ -1,6 +1,6 @@
 package com.cognitio.core.client;
 
-import com.cognitio.api.perception.PerceptionEngine;
+import com.cognitio.core.perception.PerceptionEngine;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
