@@ -89,6 +89,14 @@ public class PerceptionEngine {
         return true;
     }
 
+    public static void setInsight(Player player, int points) {
+        InsightData oldData = player.getData(AttachmentRegister.COGNITIO_INSIGHT.get());
+        InsightData newData = new InsightData(Math.max(0, points), oldData.multipliers(), oldData.bonuses());
+        player.setData(AttachmentRegister.COGNITIO_INSIGHT.get(), newData);
+
+        syncAndRefresh(player, newData.points());
+    }
+
     private static void syncAndRefresh(Player player, int points) {
         if (player instanceof ServerPlayer serverPlayer) {
             com.cognitio.core.perception.PerceptionTierManager.updatePlayerPerception(serverPlayer, getEffectivePerception(player));
