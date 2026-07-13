@@ -14,6 +14,7 @@ public class InfluenceTriggerHandler {
         Player player = event.getEntity();
         if (!player.level().isClientSide() && player.tickCount % 20 == 0) {
             NeoForge.EVENT_BUS.post(new InfluenceEvent.Psychic(player));
+            NeoForge.EVENT_BUS.post(new InfluenceEvent.Ontological(player));
         }
     }
 }
