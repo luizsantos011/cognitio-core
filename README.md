@@ -24,4 +24,4 @@ CognitioCore abstracts the complex network synchronization, math calculations, a
 
 ## Usage
 
-This project acts solely as an API and framework. It requires dependent content mods (such as *Cognitio Herbology* or *Cognitio Monsters*) to inject gameplay content utilizing these systems.
+This project acts solely as an API and framework. It requires dependent content mods to inject gameplay content utilizing these systems.
