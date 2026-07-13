@@ -18,9 +18,10 @@ public class InsightGainManager {
     @SubscribeEvent
     public static void onItemConsumed(LivingEntityUseItemEvent.Finish event) {
         if (event.getEntity() instanceof Player player && !player.level().isClientSide()) {
-            // Comer um olho de aranha (cru ou fermentado) dá Insight
-            if (event.getItem().is(Items.SPIDER_EYE) || event.getItem().is(Items.FERMENTED_SPIDER_EYE)) {
-                InsightAPI.grantInsight(player, 1, InsightSource.CONSUMABLE);
+            net.minecraft.resources.ResourceLocation itemId = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(event.getItem().getItem());
+            if (com.cognitio.core.data.InsightSourceManager.ITEM_GAINS.containsKey(itemId)) {
+                int amount = com.cognitio.core.data.InsightSourceManager.ITEM_GAINS.get(itemId);
+                InsightAPI.grantInsight(player, amount, InsightSource.CONSUMABLE);
             }
         }
     }
@@ -28,11 +29,10 @@ public class InsightGainManager {
     @SubscribeEvent
     public static void onEntityKilled(LivingDeathEvent event) {
         if (event.getSource().getEntity() instanceof Player player && !player.level().isClientSide()) {
-            LivingEntity killedEntity = event.getEntity();
-
-            // Matar um Enderman concede uma faísca de Insight
-            if (killedEntity.getType() == EntityType.ENDERMAN) {
-                InsightAPI.grantInsight(player, 5, InsightSource.ENTITY_KILL);
+            net.minecraft.resources.ResourceLocation entityId = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType());
+            if (com.cognitio.core.data.InsightSourceManager.ENTITY_KILLS.containsKey(entityId)) {
+                int amount = com.cognitio.core.data.InsightSourceManager.ENTITY_KILLS.get(entityId);
+                InsightAPI.grantInsight(player, amount, InsightSource.ENTITY_KILL);
             }
         }
     }
