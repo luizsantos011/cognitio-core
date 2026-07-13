@@ -35,7 +35,6 @@ public class InsightOverlay {
         int iconY = 5 + com.cognitio.core.config.CognitioClientConfig.HUD_OFFSET_Y.get();
 
         String text = String.valueOf(insight);
-        int textWidth = mc.font.width(text);
         
         // Posição do texto à direita do ícone
         int textX = iconX + 16 + 5;
