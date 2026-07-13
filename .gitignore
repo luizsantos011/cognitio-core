@@ -42,3 +42,7 @@ repo/
 ### Agent Temporary Logs ###
 .gemini/
 *.log
+
+### Cognitio Internal Docs ###
+docs/history/
+INTERNAL_NOTES.md
