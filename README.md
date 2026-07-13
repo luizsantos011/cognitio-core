@@ -1,25 +1,27 @@
+# CognitioCore
 
-Installation information
-=======
+CognitioCore is a foundational library and perception engine for NeoForge 1.21. It provides a robust, data-driven API for implementing occult, insanity, and insight mechanics in Minecraft mods.
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+## Features
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+- **Insight API**: A standardized, network-synchronized system for tracking a player's mental enlightenment (Insight) via NeoForge Attachments.
+- **Data-Driven Progression**: Add Insight triggers (consumables or entity kills) via Datapacks (JSON files) without writing Java code.
+- **Perception Engine**: Seamlessly manages effective insight, supporting temporary multipliers and flat bonuses.
+- **Frenzy Engine**: A built-in sanity overload mechanic that penalizes players with high Insight when exposed to eldritch horrors, featuring natural decay and configurable damage scaling.
+- **Dynamic Perception (IInsight Interfaces)**: Allows specific blocks, entities, and items to remain obfuscated or entirely invisible to players who lack the necessary Insight threshold.
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+## For Developers
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+CognitioCore abstracts the complex network synchronization, math calculations, and data persistence away from your content mods. To utilize the engine, add the compiled `.jar` to your `libs` directory and implement it as a dependency in your `build.gradle`.
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+### Key Interfaces
+
+- `InsightAPI`: Use `InsightAPI.grantInsight` or `InsightAPI.grantInsightFromTier` to manipulate player insight.
+- `IInsightBlock`: Implement this on your custom blocks to hide them from players below a specific insight tier.
+- `IInsightEntity`: Implement this on your custom entities to hide their rendering.
+- `IInsightItem`: Implement this to obfuscate item tooltips and rendering.
+- `FrenzyEngine`: Call `FrenzyEngine.addFrenzy` to trigger sanity buildup. The engine automatically scales the multiplier based on the player's total Insight.
+
+## Usage
+
+This project acts solely as an API and framework. It requires dependent content mods (such as *Cognitio Herbology* or *Cognitio Monsters*) to inject gameplay content utilizing these systems.
