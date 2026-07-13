@@ -17,7 +17,11 @@ public class InsightOverlay {
     private static final ResourceLocation EYE_TEXTURE = ResourceLocation.fromNamespaceAndPath(CognitioCore.MODID, "textures/gui/eye.png");
 
     @SubscribeEvent
-    public static void onRenderGui(RenderGuiEvent.Post event) {
+    public static void onRenderGui(RenderGuiEvent.Pre event) {
+        if (!com.cognitio.core.config.CognitioClientConfig.SHOW_HUD.get()) {
+            return;
+        }
+
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;
         if (player == null) return;
@@ -25,16 +29,19 @@ public class InsightOverlay {
         int insight = ClientInsightCache.getPoints();
 
         GuiGraphics graphics = event.getGuiGraphics();
-        int screenWidth = mc.getWindow().getGuiScaledWidth();
+        
+        // Posição ajustada pela configuração do jogador
+        int iconX = (mc.getWindow().getGuiScaledWidth() / 2) - 8 + com.cognitio.core.config.CognitioClientConfig.HUD_OFFSET_X.get();
+        int iconY = 5 + com.cognitio.core.config.CognitioClientConfig.HUD_OFFSET_Y.get();
+
         String text = String.valueOf(insight);
         int textWidth = mc.font.width(text);
         
-        int textX = screenWidth - textWidth - 10;
-        int textY = 45 + 4;
-        graphics.drawString(mc.font, text, textX, textY, 0xFFFFFF);
+        // Posição do texto à direita do ícone
+        int textX = iconX + 16 + 5;
+        int textY = iconY + 4;
 
-        int iconX = textX - 16 - 5;
-        int iconY = 45;
+        graphics.drawString(mc.font, text, textX, textY, 0xFFFFFF);
         graphics.blit(EYE_TEXTURE, iconX, iconY, 0, 0, 16, 16, 16, 16);
     }
 }

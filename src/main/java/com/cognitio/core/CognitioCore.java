@@ -33,13 +33,16 @@ public class CognitioCore {
         modEventBus.addListener(this::commonSetup);
 
         BLOCKS.register(modEventBus);
-        ITEMS.register(modEventBus);
-
+        // Registra listeners customizados
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(new InfluenceTriggerHandler());
         NeoForge.EVENT_BUS.register(new InfluenceMentalHandler());
         NeoForge.EVENT_BUS.register(new InfluenceOntologicalHandler());
         NeoForge.EVENT_BUS.register(new TimeManipulationHandler());
+
+        // Registra configurações (Client)
+        net.neoforged.fml.ModLoadingContext.get().getActiveContainer().registerConfig(net.neoforged.fml.config.ModConfig.Type.CLIENT, com.cognitio.core.config.CognitioClientConfig.SPEC);
+
 
         // Registro do arquivo de configuração do Mod
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
