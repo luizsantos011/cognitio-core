@@ -52,7 +52,17 @@ public class CognitioCore {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         LOGGER.info("Cognitio Core: Inicializando sistemas base...");
-        InsightAPI.setProvider(PerceptionEngine::addInsight);
+        InsightAPI.setProvider(new InsightAPI.IInsightProvider() {
+            @Override
+            public boolean addInsight(net.minecraft.world.entity.player.Player player, int amount, com.cognitio.api.perception.InsightSource source) {
+                return PerceptionEngine.addInsight(player, amount, source);
+            }
+
+            @Override
+            public boolean addInsightFromTier(net.minecraft.world.entity.player.Player player, com.cognitio.api.perception.EnlightenmentTier tier, int amount, com.cognitio.api.perception.InsightSource source) {
+                return PerceptionEngine.addInsightFromTier(player, tier, amount, source);
+            }
+        });
     }
 
     @SubscribeEvent

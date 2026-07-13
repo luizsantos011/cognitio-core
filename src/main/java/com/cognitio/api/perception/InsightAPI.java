@@ -32,7 +32,18 @@ public class InsightAPI {
         return false;
     }
 
+    /**
+     * Adiciona Insight ao jogador, respeitando o Hard Cap (limite) da categoria da ação.
+     */
+    public static boolean grantInsightFromTier(Player player, EnlightenmentTier tier, int amount, InsightSource source) {
+        if (provider != null) {
+            return provider.addInsightFromTier(player, tier, amount, source);
+        }
+        return false;
+    }
+
     public interface IInsightProvider {
         boolean addInsight(Player player, int amount, InsightSource source);
+        boolean addInsightFromTier(Player player, EnlightenmentTier tier, int amount, InsightSource source);
     }
 }

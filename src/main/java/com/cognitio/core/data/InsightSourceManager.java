@@ -15,8 +15,8 @@ public class InsightSourceManager extends SimpleJsonResourceReloadListener {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     
-    public static final Map<ResourceLocation, Integer> ITEM_GAINS = new HashMap<>();
-    public static final Map<ResourceLocation, Integer> ENTITY_KILLS = new HashMap<>();
+    public static final Map<ResourceLocation, com.cognitio.core.data.InsightSourceData> ITEM_GAINS = new HashMap<>();
+    public static final Map<ResourceLocation, com.cognitio.core.data.InsightSourceData> ENTITY_KILLS = new HashMap<>();
 
     public InsightSourceManager() {
         super(GSON, "insight_sources"); // Lê de data/<namespace>/insight_sources/*.json
@@ -33,14 +33,17 @@ public class InsightSourceManager extends SimpleJsonResourceReloadListener {
                     var json = jsonElement.getAsJsonObject();
                     String type = json.get("type").getAsString(); // "item" ou "entity"
                     String target = json.get("target").getAsString(); // ex: "minecraft:spider_eye"
-                    int amount = json.get("amount").getAsInt();
-
+                    
+                    int tier = json.has("tier") ? json.get("tier").getAsInt() : 1;
+                    int amount = json.has("amount") ? json.get("amount").getAsInt() : (tier == 1 ? 1 : tier * 5); // Default scale
+                    
                     ResourceLocation targetLoc = ResourceLocation.parse(target);
+                    com.cognitio.core.data.InsightSourceData data = new com.cognitio.core.data.InsightSourceData(tier, amount);
 
                     if ("item".equals(type)) {
-                        ITEM_GAINS.put(targetLoc, amount);
+                        ITEM_GAINS.put(targetLoc, data);
                     } else if ("entity".equals(type)) {
-                        ENTITY_KILLS.put(targetLoc, amount);
+                        ENTITY_KILLS.put(targetLoc, data);
                     }
                 }
             } catch (Exception e) {

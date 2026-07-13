@@ -89,6 +89,20 @@ public class PerceptionEngine {
         return true;
     }
 
+    public static boolean addInsightFromTier(Player player, com.cognitio.api.perception.EnlightenmentTier tier, int amount, InsightSource source) {
+        int currentInsight = getEffectivePerception(player);
+        int hardCap = tier.getHardCap();
+
+        if (currentInsight >= hardCap) {
+            // Jogador superou este conhecimento. Evento bloqueado silenciosamente.
+            return false;
+        }
+
+        // Concede o 'amount' ou o restante até atingir o limite exato do Tier
+        int gain = Math.min(amount, hardCap - currentInsight);
+        return addInsight(player, gain, source);
+    }
+
     public static void setInsight(Player player, int points) {
         InsightData oldData = player.getData(AttachmentRegister.COGNITIO_INSIGHT.get());
         InsightData newData = new InsightData(Math.max(0, points), oldData.multipliers(), oldData.bonuses());

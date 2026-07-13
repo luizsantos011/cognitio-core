@@ -17,8 +17,9 @@ public class InsightGainManager {
         if (event.getEntity() instanceof Player player && !player.level().isClientSide()) {
             net.minecraft.resources.ResourceLocation itemId = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(event.getItem().getItem());
             if (com.cognitio.core.data.InsightSourceManager.ITEM_GAINS.containsKey(itemId)) {
-                int amount = com.cognitio.core.data.InsightSourceManager.ITEM_GAINS.get(itemId);
-                InsightAPI.grantInsight(player, amount, InsightSource.CONSUMABLE);
+                com.cognitio.core.data.InsightSourceData data = com.cognitio.core.data.InsightSourceManager.ITEM_GAINS.get(itemId);
+                com.cognitio.api.perception.EnlightenmentTier tier = com.cognitio.api.perception.EnlightenmentTier.fromLevel(data.tier());
+                InsightAPI.grantInsightFromTier(player, tier, data.amount(), InsightSource.CONSUMABLE);
             }
         }
     }
@@ -28,8 +29,9 @@ public class InsightGainManager {
         if (event.getSource().getEntity() instanceof Player player && !player.level().isClientSide()) {
             net.minecraft.resources.ResourceLocation entityId = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType());
             if (com.cognitio.core.data.InsightSourceManager.ENTITY_KILLS.containsKey(entityId)) {
-                int amount = com.cognitio.core.data.InsightSourceManager.ENTITY_KILLS.get(entityId);
-                InsightAPI.grantInsight(player, amount, InsightSource.ENTITY_KILL);
+                com.cognitio.core.data.InsightSourceData data = com.cognitio.core.data.InsightSourceManager.ENTITY_KILLS.get(entityId);
+                com.cognitio.api.perception.EnlightenmentTier tier = com.cognitio.api.perception.EnlightenmentTier.fromLevel(data.tier());
+                InsightAPI.grantInsightFromTier(player, tier, data.amount(), InsightSource.ENTITY_KILL);
             }
         }
     }
