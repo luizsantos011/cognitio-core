@@ -17,6 +17,14 @@ public class AttachmentRegister {
                     .copyOnDeath()
                     .build()
     );
+
+    public static final Supplier<AttachmentType<FrenzyData>> COGNITIO_FRENZY = ATTACHMENT_TYPES.register(
+            "frenzy",
+            () -> AttachmentType.builder(() -> new FrenzyData(0f))
+                    .serialize(FrenzyData.CODEC)
+                    // FRENESI zera ao morrer, então não tem .copyOnDeath()
+                    .build()
+    );
 }
 
 

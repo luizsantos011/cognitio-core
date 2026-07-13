@@ -16,5 +16,10 @@ public class NetworkRegistry {
                 SyncInsightPayload.STREAM_CODEC,
                 SyncInsightHandler::handle
         );
+        registrar.playToClient(
+                SyncFrenzyPayload.TYPE,
+                SyncFrenzyPayload.STREAM_CODEC,
+                SyncFrenzyHandler::handle
+        );
     }
 }
