@@ -34,4 +34,13 @@ public enum EnlightenmentTier {
         }
         return TIER_1; // Padrão se não encontrado
     }
+
+    public int getRequiredInsight() {
+        return switch (this) {
+            case TIER_1 -> 1;
+            case TIER_2 -> TIER_1.getHardCap();
+            case TIER_3 -> TIER_2.getHardCap();
+            case TIER_4 -> TIER_3.getHardCap();
+        };
+    }
 }
