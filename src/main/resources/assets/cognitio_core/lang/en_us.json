@@ -1,5 +1,6 @@
 {
   "itemGroup.cognitio_core": "Example Mod Tab",
   "block.cognitio_core.example_block": "Example Block",
-  "item.cognitio_core.example_item": "Example Item"
+  "item.cognitio_core.example_item": "Example Item",
+  "effect.cognitio_core.frenzy": "Frenzy"
 }

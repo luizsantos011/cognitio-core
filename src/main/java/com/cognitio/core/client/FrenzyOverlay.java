@@ -41,14 +41,6 @@ public class FrenzyOverlay {
         int fillWidth = (int) ((frenzy / 100f) * barWidth);
         graphics.fill(x, y, x + fillWidth, y + barHeight, 0xFFA020F0);
         
-        // Alerta piscante quando está quase rompendo
-        if (frenzy > 80f) {
-            String warning = "SOBRECARGA MENTAL";
-            int textWidth = mc.font.width(warning);
-            // Pisca baseado no tempo do jogo
-            if (player.tickCount % 10 < 5) {
-                graphics.drawString(mc.font, warning, x + (barWidth - textWidth) / 2, y - 12, 0xFFFF0000, true);
-            }
-        }
+        // O aviso em texto foi removido a pedido do usuário (mantemos só a barra visual).
     }
 }

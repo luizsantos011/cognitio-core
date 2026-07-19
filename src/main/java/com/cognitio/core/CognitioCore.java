@@ -2,6 +2,7 @@ package com.cognitio.core;
 
 import com.cognitio.core.attachment.AttachmentRegister;
 import com.cognitio.core.influence.*;
+import com.cognitio.core.registry.ModEffects;
 import com.cognitio.api.perception.InsightAPI;
 import com.cognitio.core.perception.PerceptionEngine;
 import org.slf4j.Logger;
@@ -33,6 +34,7 @@ public class CognitioCore {
         modEventBus.addListener(this::commonSetup);
 
         BLOCKS.register(modEventBus);
+        ModEffects.register(modEventBus);
         // Registra listeners customizados
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(new InfluenceTriggerHandler());
