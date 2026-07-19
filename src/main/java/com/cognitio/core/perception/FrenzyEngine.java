@@ -35,6 +35,15 @@ public class FrenzyEngine {
         FrenzyData oldData = player.getData(AttachmentRegister.COGNITIO_FRENZY.get());
         float newFrenzy = Math.min(100f, oldData.amount() + finalAmount);
         
+        if (oldData.amount() < 100f && newFrenzy >= 100f) {
+            serverPlayer.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                com.cognitio.core.registry.ModEffects.FRENZY,
+                300, // 15 segundos
+                0, false, true, true
+            ));
+            newFrenzy = 0f; // Estouro de sanidade (zera a barra)
+        }
+
         setFrenzy(serverPlayer, newFrenzy, true);
     }
 
@@ -56,10 +65,7 @@ public class FrenzyEngine {
                 // Decaimento Natural: -0.05 por tick (1 ponto por segundo)
                 float newFrenzy = Math.max(0f, frenzy - 0.05f);
                 
-                // Dano Mágico aos 100% (Afogamento Mental)
-                if (frenzy >= 100f && player.tickCount % 20 == 0) {
-                    player.hurt(player.damageSources().magic(), 2.0f); // 1 coração
-                }
+
 
                 if (newFrenzy != frenzy) {
                     player.setData(AttachmentRegister.COGNITIO_FRENZY.get(), new FrenzyData(newFrenzy));
